@@ -10,10 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nnataraj.assignment4.dummy.DummyContent;
-import com.nnataraj.assignment4.dummy.DummyContent.DummyItem;
-
-import java.util.List;
+import java.util.Map;
 
 /**
  * A fragment representing a list of Items.
@@ -69,7 +66,7 @@ public class MovieItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyMovieItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyMovieItemRecyclerViewAdapter(mListener));
         }
         return view;
     }
@@ -104,6 +101,6 @@ public class MovieItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Map<String, ?> item);
     }
 }
