@@ -21,12 +21,20 @@
             android:text="TextView"
             android:textSize="13.5sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_toEndOf="@+id/movie_icon"
+            android:textSize="12sp"
+            android:text="TextView" />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/checkBox"
+            android:layout_below="@+id/year"
             android:layout_toEndOf="@+id/movie_icon"
             android:textSize="12sp"
             android:text="TextView" />

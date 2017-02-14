@@ -23,6 +23,10 @@ public class MovieData {
         } else return null;
     }
 
+    public  void removeItem(int i) {
+        moviesList.remove(i);
+    }
+
     public MovieData() {
         String description;
         String length;

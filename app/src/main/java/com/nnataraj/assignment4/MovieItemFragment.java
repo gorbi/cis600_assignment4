@@ -3,13 +3,16 @@ package com.nnataraj.assignment4;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,11 +23,8 @@ import java.util.Map;
  */
 public class MovieItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private static MovieData movieData = new MovieData();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -35,21 +35,8 @@ public class MovieItemFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MovieItemFragment newInstance(int columnCount) {
-        MovieItemFragment fragment = new MovieItemFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+    public static MovieItemFragment newInstance() {
+        return new MovieItemFragment();
     }
 
     @Override
@@ -58,16 +45,70 @@ public class MovieItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movieitem_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_activity_main_container);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        final MyMovieItemRecyclerViewAdapter itemRecyclerViewAdapter = new MyMovieItemRecyclerViewAdapter(mListener, movieData.getMoviesList());
+        recyclerView.setAdapter(itemRecyclerViewAdapter);
+
+        Button selectAll = (Button) view.findViewById(R.id.select_all_button);
+        selectAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = itemRecyclerViewAdapter.getItemCount();
+                for (int i = 0; i < count; i++) {
+                    HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(i);
+                    item.put("selection", true);
+                }
+                itemRecyclerViewAdapter.notifyDataSetChanged();
             }
-            recyclerView.setAdapter(new MyMovieItemRecyclerViewAdapter(mListener));
+        });
+
+        Button clearAll = (Button) view.findViewById(R.id.clear_all_button);
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = itemRecyclerViewAdapter.getItemCount();
+                for (int i = 0; i < count; i++) {
+                    HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(i);
+                    item.put("selection", false);
+                }
+                itemRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Button delete = (Button) view.findViewById(R.id.delete_button);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = itemRecyclerViewAdapter.getItemCount();
+                for (int i = 0; i < count; i++) {
+                    HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(i);
+                    if (item != null && item.get("selection")) {
+                        movieData.removeItem(i);
+                        itemRecyclerViewAdapter.notifyItemRemoved(i);
+                    }
+                }
+            }
+        });
+
+        class MovieComparator implements Comparator {
+            @Override
+            public int compare(Object o1, Object o2) {
+                Integer obj1Value = Integer.parseInt((String) ((HashMap) o1).get("year"));
+                Integer obj2Value = Integer.parseInt((String) ((HashMap) o2).get("year"));
+                return obj1Value.compareTo(obj2Value);
+            }
         }
+
+        Button sort = (Button) view.findViewById(R.id.sort_button);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Collections.sort(movieData.getMoviesList(), new MovieComparator());
+                itemRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
+
         return view;
     }
 
@@ -102,5 +143,7 @@ public class MovieItemFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Map<String, ?> item);
+
+        void onItemSelected(Map<String, ?> item);
     }
 }

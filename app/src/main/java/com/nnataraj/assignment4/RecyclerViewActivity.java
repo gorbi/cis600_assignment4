@@ -30,4 +30,10 @@ public class RecyclerViewActivity extends AppCompatActivity implements MovieItem
         transaction.addToBackStack("store");
         transaction.commit();
     }
+
+    @Override
+    public void onItemSelected(Map<String, ?> item) {
+        Map i = (Map) item;
+        i.put("selection",!((boolean)(Object)item.get("selection")));
+    }
 }

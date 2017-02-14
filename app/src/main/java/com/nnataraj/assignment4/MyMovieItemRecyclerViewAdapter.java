@@ -1,14 +1,17 @@
 package com.nnataraj.assignment4;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nnataraj.assignment4.MovieItemFragment.OnListFragmentInteractionListener;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,12 +21,12 @@ import java.util.Map;
  */
 public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovieItemRecyclerViewAdapter.ViewHolder> {
 
-    private final MovieData movieData;
+    private List<Map<String, ?>> movieData;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyMovieItemRecyclerViewAdapter(OnListFragmentInteractionListener listener) {
+    public MyMovieItemRecyclerViewAdapter(OnListFragmentInteractionListener listener, List<Map<String, ?>> movieData) {
         mListener = listener;
-        movieData = new MovieData();
+        this.movieData = movieData;
     }
 
     @Override
@@ -35,10 +38,36 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = movieData.getItem(position);
-        holder.mTitle.setText((String)movieData.getItem(position).get("name"));
-        holder.mDescription.setText((String)movieData.getItem(position).get("description"));
-        holder.mIcon.setImageResource((int)movieData.getItem(position).get("image"));
+        holder.mItem = movieData.get(position);
+        holder.mTitle.setText((String)holder.mItem.get("name"));
+        holder.mDescription.setText((String)holder.mItem.get("description"));
+        holder.mIcon.setImageResource((int)(Object)holder.mItem.get("image"));
+        holder.mCheckBox.setChecked((boolean)(Object)holder.mItem.get("selection"));
+        holder.mYear.setText((String)holder.mItem.get("year"));
+
+        holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListener.onItemSelected(holder.mItem);
+                }
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (null != mListener) {
+                    // Notify the active callbacks interface (the activity, if the
+                    // fragment is attached to one) that an item has been selected.
+                    mListener.onListFragmentInteraction(holder.mItem);
+                }
+                Log.d("NAGA","Long Press");
+                return false;
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +83,7 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
 
     @Override
     public int getItemCount() {
-        return movieData.getSize();
+        return movieData.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +91,8 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
         public final TextView mTitle;
         public final TextView mDescription;
         public final ImageView mIcon;
+        public final CheckBox mCheckBox;
+        public final TextView mYear;
         public Map<String, ?> mItem;
 
         public ViewHolder(View view) {
@@ -70,6 +101,8 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
             mTitle = (TextView) view.findViewById(R.id.title);
             mDescription = (TextView) view.findViewById(R.id.description);
             mIcon = (ImageView) view.findViewById(R.id.movie_icon);
+            mCheckBox = (CheckBox) view.findViewById(R.id.checkBox);
+            mYear = (TextView) view.findViewById(R.id.year);
         }
     }
 }
