@@ -10,25 +10,33 @@ import java.util.Map;
 
 public class RecyclerViewActivity extends AppCompatActivity implements MovieItemFragment.OnListFragmentInteractionListener {
 
+    MovieItemFragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        MovieItemFragment fragment = new MovieItemFragment();
+        fragment = new MovieItemFragment();
         transaction.replace(R.id.recycler_activity_main_container, fragment);
         transaction.commit();
 
     }
 
     @Override
-    public void onListFragmentInteraction(Map<String, ?> item) {
+    public void onClick(Map<String, ?> item) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = DetailViewFragment.newInstance((HashMap<String, ?>) item);
         transaction.replace(R.id.recycler_activity_main_container, fragment);
         transaction.addToBackStack("store");
         transaction.commit();
+
+    }
+
+    @Override
+    public void onLongClick(int position) {
+        fragment.cloneMovie(position);
     }
 
     @Override

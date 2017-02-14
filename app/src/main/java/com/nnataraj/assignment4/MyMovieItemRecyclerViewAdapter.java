@@ -37,7 +37,7 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = movieData.get(position);
         holder.mTitle.setText((String)holder.mItem.get("name"));
         holder.mDescription.setText((String)holder.mItem.get("description"));
@@ -62,10 +62,9 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onLongClick(position);
                 }
-                Log.d("NAGA","Long Press");
-                return false;
+                return true;
             }
         });
 
@@ -75,7 +74,7 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onClick(holder.mItem);
                 }
             }
         });

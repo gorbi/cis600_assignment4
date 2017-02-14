@@ -25,6 +25,7 @@ import java.util.Map;
 public class MovieItemFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
+    MyMovieItemRecyclerViewAdapter itemRecyclerViewAdapter;
     private static MovieData movieData = new MovieData();
 
     /**
@@ -34,10 +35,11 @@ public class MovieItemFragment extends Fragment {
     public MovieItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static MovieItemFragment newInstance() {
-        return new MovieItemFragment();
+    public void cloneMovie(int position) {
+        HashMap item = movieData.getItem(position);
+        movieData.moviesList.add(position,item);
+        itemRecyclerViewAdapter.notifyItemInserted(position);
+
     }
 
     @Override
@@ -48,7 +50,7 @@ public class MovieItemFragment extends Fragment {
         // Set the adapter
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_activity_main_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        final MyMovieItemRecyclerViewAdapter itemRecyclerViewAdapter = new MyMovieItemRecyclerViewAdapter(mListener, movieData.getMoviesList());
+        itemRecyclerViewAdapter = new MyMovieItemRecyclerViewAdapter(mListener, movieData.getMoviesList());
         recyclerView.setAdapter(itemRecyclerViewAdapter);
 
         Button selectAll = (Button) view.findViewById(R.id.select_all_button);
@@ -147,8 +149,8 @@ public class MovieItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Map<String, ?> item);
-
+        void onClick(Map<String, ?> item);
+        void onLongClick(int position);
         void onItemSelected(Map<String, ?> item);
     }
 }
