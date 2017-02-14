@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nnataraj.assignment4.MovieItemFragment.OnListFragmentInteractionListener;
@@ -35,8 +36,9 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = movieData.getItem(position);
-        holder.mIdView.setText((String)movieData.getItem(position).get("name"));
-        holder.mContentView.setText((String)movieData.getItem(position).get("year"));
+        holder.mTitle.setText((String)movieData.getItem(position).get("name"));
+        holder.mDescription.setText((String)movieData.getItem(position).get("description"));
+        holder.mIcon.setImageResource((int)movieData.getItem(position).get("image"));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,20 +59,17 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mTitle;
+        public final TextView mDescription;
+        public final ImageView mIcon;
         public Map<String, ?> mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            mTitle = (TextView) view.findViewById(R.id.title);
+            mDescription = (TextView) view.findViewById(R.id.description);
+            mIcon = (ImageView) view.findViewById(R.id.movie_icon);
         }
     }
 }
