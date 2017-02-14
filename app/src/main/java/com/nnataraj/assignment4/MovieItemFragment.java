@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,12 +82,16 @@ public class MovieItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int count = itemRecyclerViewAdapter.getItemCount();
-                for (int i = 0; i < count; i++) {
-                    HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(i);
-                    if (item != null && item.get("selection")) {
-                        movieData.removeItem(i);
-                        itemRecyclerViewAdapter.notifyItemRemoved(i);
+                int index=0;
+                while (!(count <= 0)) {
+                    HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(index);
+                    if (item.get("selection")) {
+                        movieData.removeItem(index);
+                        itemRecyclerViewAdapter.notifyItemRemoved(index);
+                    } else {
+                        index++;
                     }
+                    count--;
                 }
             }
         });
