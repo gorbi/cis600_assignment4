@@ -1,10 +1,11 @@
 package com.nnataraj.assignment4;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RecyclerViewActivity extends AppCompatActivity implements MovieItemFragment.OnListFragmentInteractionListener {
@@ -23,6 +24,10 @@ public class RecyclerViewActivity extends AppCompatActivity implements MovieItem
 
     @Override
     public void onListFragmentInteraction(Map<String, ?> item) {
-        Log.d("Naga", "Clicked "+item.get("name"));
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = DetailViewFragment.newInstance((HashMap<String, ?>) item);
+        transaction.replace(R.id.recycler_activity_main_container, fragment);
+        transaction.addToBackStack("store");
+        transaction.commit();
     }
 }
