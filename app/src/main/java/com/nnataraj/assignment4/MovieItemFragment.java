@@ -16,6 +16,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -51,7 +53,7 @@ public class MovieItemFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_activity_main_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         itemRecyclerViewAdapter = new MyMovieItemRecyclerViewAdapter(mListener, movieData.getMoviesList());
-        recyclerView.setAdapter(itemRecyclerViewAdapter);
+        recyclerView.setAdapter(new AlphaInAnimationAdapter(itemRecyclerViewAdapter));
 
         Button selectAll = (Button) view.findViewById(R.id.select_all_button);
         selectAll.setOnClickListener(new View.OnClickListener() {
