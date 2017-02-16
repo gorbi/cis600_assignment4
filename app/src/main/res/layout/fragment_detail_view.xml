@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MovieFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="20dp"
-    android:id="@+id/MovieFragment"
     tools:context="com.nnataraj.assignment4.DetailViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -46,20 +46,20 @@
         android:layout_toRightOf="@id/image" />
 
     <TextView
+        android:id="@+id/director"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/cast"
-        android:id="@+id/director"/>
+        android:layout_toRightOf="@id/image" />
 
     <RatingBar
         android:id="@+id/ratingBar"
-        android:max="5"
-        android:stepSize="0.1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/image" />
+        android:layout_below="@id/image"
+        android:isIndicator="true"
+        android:stepSize="0.1" />
 
     <TextView
         android:id="@+id/description"

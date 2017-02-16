@@ -1,6 +1,7 @@
 package com.nnataraj.assignment4;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 
 import java.util.Collections;
@@ -16,7 +18,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import jp.wasabeef.recyclerview.animators.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * A fragment representing a list of Items.
@@ -38,9 +41,21 @@ public class MovieItemFragment extends Fragment {
     }
 
     public void cloneMovie(int position) {
-        movieData.moviesList.add(position,(Map)movieData.getItem(position).clone());
+        movieData.moviesList.add(position, (Map) movieData.getItem(position).clone());
         itemRecyclerViewAdapter.notifyItemInserted(position);
 
+    }
+
+    public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
+                                   RecyclerView.State state) {
+            if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
+                outRect.bottom = 20;
+            }
+            outRect.left = 20;
+            outRect.right = 20;
+        }
     }
 
     @Override
@@ -52,8 +67,11 @@ public class MovieItemFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_activity_main_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         itemRecyclerViewAdapter = new MyMovieItemRecyclerViewAdapter(mListener, movieData.getMoviesList());
-        recyclerView.setAdapter(itemRecyclerViewAdapter);
-        //recyclerView.setAdapter(new AlphaInAnimationAdapter(itemRecyclerViewAdapter));
+        AlphaInAnimationAdapter slideInBottomAnimationAdapter = new AlphaInAnimationAdapter(itemRecyclerViewAdapter);
+        recyclerView.setAdapter(slideInBottomAnimationAdapter);
+        recyclerView.addItemDecoration(new VerticalSpaceItemDecoration());
+        recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
+        slideInBottomAnimationAdapter.setDuration(1000);
 
         Button selectAll = (Button) view.findViewById(R.id.select_all_button);
         selectAll.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +104,7 @@ public class MovieItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 int count = itemRecyclerViewAdapter.getItemCount();
-                int index=0;
+                int index = 0;
                 while (!(count <= 0)) {
                     HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(index);
                     if (item.get("selection")) {
@@ -152,7 +170,9 @@ public class MovieItemFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onClick(Map<String, ?> item);
+
         void onLongClick(int position);
+
         void onItemSelected(Map<String, ?> item);
     }
 }
