@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class FrontPageActivity extends AppCompatActivity {
 
@@ -16,8 +17,10 @@ public class FrontPageActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        startActivity(new Intent(this,RecyclerViewActivity.class));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment,new FrontPageActivityFragment())
+                .commit();
     }
 
     @Override
@@ -32,13 +35,24 @@ public class FrontPageActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_about_me:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment,new AboutMeFragment())
+                        .addToBackStack("store")
+                        .commit();
+                return true;
+            case R.id.action_task_1:
+                startActivity(new Intent(this,RecyclerViewActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    public void onClickAboutMe(View view) {
+
     }
 }

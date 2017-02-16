@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nnataraj.assignment4.FrontPageActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_about_me"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="About me"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_task_1"
+        android:orderInCategory="101"
+        android:title="Task 1"
         app:showAsAction="never" />
 </menu>
