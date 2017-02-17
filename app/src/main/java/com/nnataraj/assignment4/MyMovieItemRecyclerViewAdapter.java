@@ -1,12 +1,12 @@
 package com.nnataraj.assignment4;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.nnataraj.assignment4.MovieItemFragment.OnListFragmentInteractionListener;
@@ -39,11 +39,12 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = movieData.get(position);
-        holder.mTitle.setText((String)holder.mItem.get("name"));
-        holder.mDescription.setText((String)holder.mItem.get("description"));
-        holder.mIcon.setImageResource((int)(Object)holder.mItem.get("image"));
-        holder.mCheckBox.setChecked((boolean)(Object)holder.mItem.get("selection"));
-        holder.mYear.setText((String)holder.mItem.get("year"));
+        holder.mTitle.setText((String) holder.mItem.get("name"));
+        holder.mDescription.setText((String) holder.mItem.get("description"));
+        holder.mIcon.setImageResource((int) (Object) holder.mItem.get("image"));
+        holder.mCheckBox.setChecked((boolean) (Object) holder.mItem.get("selection"));
+        holder.mYear.setText((String) holder.mItem.get("year"));
+        holder.mRatingBar.setRating(((float) (double) (Object) holder.mItem.get("rating")) / 2f);
 
         holder.mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +93,7 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
         public final ImageView mIcon;
         public final CheckBox mCheckBox;
         public final TextView mYear;
+        public final RatingBar mRatingBar;
         public Map<String, ?> mItem;
 
         public ViewHolder(View view) {
@@ -102,6 +104,7 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
             mIcon = (ImageView) view.findViewById(R.id.movie_icon);
             mCheckBox = (CheckBox) view.findViewById(R.id.checkBox);
             mYear = (TextView) view.findViewById(R.id.year);
+            mRatingBar = (RatingBar) view.findViewById(R.id.ratingBar);
         }
     }
 }

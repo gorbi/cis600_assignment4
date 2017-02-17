@@ -60,7 +60,7 @@ public class DetailViewFragment extends Fragment {
         final TextView name = (TextView) rootView.findViewById(R.id.title);
         final TextView year = (TextView) rootView.findViewById(R.id.year);
         final TextView length = (TextView) rootView.findViewById(R.id.length);
-        final RatingBar rating = (RatingBar) rootView.findViewById(R.id.ratingBar);
+        final RatingBar ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
         final TextView director = (TextView) rootView.findViewById(R.id.director);
         final TextView cast = (TextView) rootView.findViewById(R.id.cast);
         final TextView description = (TextView) rootView.findViewById(R.id.description);
@@ -72,12 +72,8 @@ public class DetailViewFragment extends Fragment {
         director.setText((String) movieData.get("director"));
         cast.setText((String) movieData.get("stars"));
         description.setText((String) movieData.get("description"));
-        Object image = movieData.get("image");
-        imageView.setImageResource((int) image);
-        Double ratingValue = (Double) movieData.get("rating");
-
-        rating.setRating((float)(double)ratingValue/2);
-
+        imageView.setImageResource((int) (Object) movieData.get("image"));
+        ratingBar.setRating(((float) (double) (Object) movieData.get("rating")) / 2f);
 
         return rootView;
     }

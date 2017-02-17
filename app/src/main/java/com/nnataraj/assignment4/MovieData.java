@@ -13,17 +13,13 @@ public class MovieData {
         return moviesList;
     }
 
-    public int getSize() {
-        return moviesList.size();
-    }
-
     public HashMap getItem(int i) {
         if (i >= 0 && i < moviesList.size()) {
             return (HashMap) moviesList.get(i);
         } else return null;
     }
 
-    public  void removeItem(int i) {
+    public void removeItem(int i) {
         moviesList.remove(i);
     }
 

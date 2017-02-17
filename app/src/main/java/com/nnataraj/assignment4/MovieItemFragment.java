@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FlipInTopXAnimator;
 
 /**
  * A fragment representing a list of Items.
@@ -42,7 +42,7 @@ public class MovieItemFragment extends Fragment {
 
     public void cloneMovie(int position) {
         movieData.moviesList.add(position, (Map) movieData.getItem(position).clone());
-        itemRecyclerViewAdapter.notifyItemInserted(position);
+        itemRecyclerViewAdapter.notifyItemInserted(position + 1);
 
     }
 
@@ -67,11 +67,20 @@ public class MovieItemFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_activity_main_container);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         itemRecyclerViewAdapter = new MyMovieItemRecyclerViewAdapter(mListener, movieData.getMoviesList());
-        AlphaInAnimationAdapter slideInBottomAnimationAdapter = new AlphaInAnimationAdapter(itemRecyclerViewAdapter);
-        recyclerView.setAdapter(slideInBottomAnimationAdapter);
+
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(itemRecyclerViewAdapter);
+        alphaAdapter.setInterpolator(new OvershootInterpolator(1f));
+        alphaAdapter.setDuration(1000);
+        ScaleInAnimationAdapter scaleInAnimationAdapter = new ScaleInAnimationAdapter(alphaAdapter);
+        scaleInAnimationAdapter.setDuration(1000);
+        recyclerView.setAdapter(scaleInAnimationAdapter);
+
+        FlipInTopXAnimator flipInTopXAnimator = new FlipInTopXAnimator(new OvershootInterpolator(1f));
+        flipInTopXAnimator.setAddDuration(500);
+        flipInTopXAnimator.setRemoveDuration(500);
+        recyclerView.setItemAnimator(flipInTopXAnimator);
+
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration());
-        recyclerView.setItemAnimator(new SlideInUpAnimator(new OvershootInterpolator(1f)));
-        slideInBottomAnimationAdapter.setDuration(1000);
 
         Button selectAll = (Button) view.findViewById(R.id.select_all_button);
         selectAll.setOnClickListener(new View.OnClickListener() {

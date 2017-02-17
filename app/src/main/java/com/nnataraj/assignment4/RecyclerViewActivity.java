@@ -42,6 +42,6 @@ public class RecyclerViewActivity extends AppCompatActivity implements MovieItem
     @Override
     public void onItemSelected(Map<String, ?> item) {
         Map i = (Map) item;
-        i.put("selection",!((boolean)(Object)item.get("selection")));
+        i.put("selection", !((boolean) (Object) item.get("selection")));
     }
 }
