@@ -14,8 +14,9 @@
         android:id="@+id/button_about_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="About me"
         android:layout_weight="1"
+        android:onClick="onClickAboutMe"
+        android:text="About me"
         android:textAllCaps="false" />
 
     <Button
@@ -23,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:onClick="onClickTask1"
         android:text="Task 1"
         android:textAllCaps="false" />
 

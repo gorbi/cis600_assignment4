@@ -10,6 +10,8 @@ import android.view.View;
 
 public class FrontPageActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +21,7 @@ public class FrontPageActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment,new FrontPageActivityFragment())
+                .replace(R.id.fragment, new FrontPageActivityFragment())
                 .commit();
     }
 
@@ -31,6 +33,12 @@ public class FrontPageActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //outState.putInt("curChoice", mCurCheckPosition);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -38,14 +46,10 @@ public class FrontPageActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_about_me:
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment,new AboutMeFragment())
-                        .addToBackStack("store")
-                        .commit();
+                onClickAboutMe(null);
                 return true;
             case R.id.action_task_1:
-                startActivity(new Intent(this,RecyclerViewActivity.class));
+                onClickTask1(null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -53,6 +57,14 @@ public class FrontPageActivity extends AppCompatActivity {
     }
 
     public void onClickAboutMe(View view) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, new AboutMeFragment())
+                .addToBackStack("store")
+                .commit();
+    }
 
+    public void onClickTask1(View view) {
+        startActivity(new Intent(this, RecyclerViewActivity.class));
     }
 }
