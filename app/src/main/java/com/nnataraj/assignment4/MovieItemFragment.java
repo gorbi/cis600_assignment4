@@ -43,6 +43,7 @@ public class MovieItemFragment extends Fragment {
     public void cloneMovie(int position) {
         movieData.moviesList.add(position, (Map) movieData.getItem(position).clone());
         itemRecyclerViewAdapter.notifyItemInserted(position + 1);
+        itemRecyclerViewAdapter.notifyDataSetChanged();
 
     }
 
@@ -116,12 +117,13 @@ public class MovieItemFragment extends Fragment {
                     HashMap<String, Boolean> item = (HashMap<String, Boolean>) movieData.getItem(index);
                     if (item.get("selection")) {
                         movieData.removeItem(index);
-                        itemRecyclerViewAdapter.notifyItemRemoved(index);
+                        itemRecyclerViewAdapter.notifyItemRemoved(index-1);
                     } else {
                         index++;
                     }
                     count--;
                 }
+                itemRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
 
