@@ -30,9 +30,33 @@ public class MyMovieItemRecyclerViewAdapter extends RecyclerView.Adapter<MyMovie
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (position < 5)
+            return 0;
+        else if (position > movieData.size() - 6)
+            return 2;
+        else
+            return 1;
+    }
+
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_movieitem, parent, false);
+        View view;
+
+        switch (viewType) {
+            case 0:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.fragment_movieitem, parent, false);
+                break;
+            case 1:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.fragment_movieitem3, parent, false);
+                break;
+            default:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.fragment_movieitem2, parent, false);
+        }
+
         return new ViewHolder(view);
     }
 
