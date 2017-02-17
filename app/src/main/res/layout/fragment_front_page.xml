@@ -11,21 +11,25 @@
     android:weightSum="3">
 
     <Button
+        android:background="@drawable/aboutme"
         android:id="@+id/button_about_me"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="100px"
         android:onClick="onClickAboutMe"
-        android:text="About me"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:layout_weight="1" />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
     <Button
+        android:background="@drawable/task"
         android:id="@+id/button_task_2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="100px"
         android:onClick="onClickTask1"
-        android:text="Task 1"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:layout_weight="1" />
 
 </LinearLayout>
