@@ -2,6 +2,7 @@ package com.nnataraj.assignment4;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -10,7 +11,16 @@ import android.view.View;
 
 public class FrontPageActivity extends AppCompatActivity {
 
+    int mCurCheckPosition = 0;
 
+    private static Fragment getFragment(int mCurCheckPosition) {
+        switch (mCurCheckPosition) {
+            case 1:
+                return new AboutMeFragment();
+            default:
+                return new FrontPageActivityFragment();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +29,15 @@ public class FrontPageActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (savedInstanceState != null) {
+            mCurCheckPosition = savedInstanceState.getInt("curChoice");
+        } else {
+            mCurCheckPosition = 0;
+        }
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment, new FrontPageActivityFragment())
+                .replace(R.id.fragment, getFragment(mCurCheckPosition))
                 .commit();
     }
 
@@ -35,7 +51,7 @@ public class FrontPageActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //outState.putInt("curChoice", mCurCheckPosition);
+        outState.putInt("curChoice", mCurCheckPosition);
     }
 
     @Override
@@ -57,14 +73,25 @@ public class FrontPageActivity extends AppCompatActivity {
     }
 
     public void onClickAboutMe(View view) {
+        mCurCheckPosition = 1;
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment, new AboutMeFragment())
+                .replace(R.id.fragment, getFragment(mCurCheckPosition))
                 .addToBackStack("store")
                 .commit();
     }
 
     public void onClickTask1(View view) {
         startActivity(new Intent(this, RecyclerViewActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mCurCheckPosition = 0;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, getFragment(mCurCheckPosition))
+                .commit();
     }
 }
