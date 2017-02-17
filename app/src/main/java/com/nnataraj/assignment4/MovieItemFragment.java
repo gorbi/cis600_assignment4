@@ -43,8 +43,6 @@ public class MovieItemFragment extends Fragment {
     public void cloneMovie(int position) {
         movieData.moviesList.add(position, (Map) movieData.getItem(position).clone());
         itemRecyclerViewAdapter.notifyItemInserted(position + 1);
-        itemRecyclerViewAdapter.notifyDataSetChanged();
-
     }
 
     public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
@@ -123,7 +121,6 @@ public class MovieItemFragment extends Fragment {
                     }
                     count--;
                 }
-                itemRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
 
