@@ -50,9 +50,7 @@ public class MovieItemFragment extends Fragment {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                    RecyclerView.State state) {
-            if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-                outRect.bottom = 20;
-            }
+            outRect.bottom = 20;
             outRect.left = 20;
             outRect.right = 20;
         }
